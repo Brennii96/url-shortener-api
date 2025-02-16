@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
     libsqlite3-dev \
     sqlite3 \
+    zip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo_sqlite mbstring exif pcntl bcmath gd

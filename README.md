@@ -18,6 +18,10 @@ Run helper docker up command:
 ```bash
 make start
 ```
+Run composer install and generate key
+```aiignore
+make composer-install && make generate-key
+```
 
 ## Authors
 
