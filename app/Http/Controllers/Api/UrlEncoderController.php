@@ -21,7 +21,7 @@ class UrlEncoderController extends Controller
      * @param ShortenUrlRequest $request
      * @return JsonResponse
      */
-    public function shorten(ShortenUrlRequest $request): JsonResponse
+    public function encode(ShortenUrlRequest $request): JsonResponse
     {
         $validatedRequest = $request->validated();
         $shortenedUrlData = $this->encoderService->encode($validatedRequest['url']);
@@ -39,19 +39,19 @@ class UrlEncoderController extends Controller
     public function decode(Request $request): JsonResponse
     {
         $request->validate([
-            'key' => ['required', 'string', 'size:6']
+            'key' => ['required', 'string']
         ]);
 
         $originalUrl = $this->encoderService->decode($request->get('key'));
 
         if (!$originalUrl) {
-            return response()->json([
+            return new JsonResponse([
                 'success' => false,
                 'message' => 'Short URL not found.',
             ], 404);
         }
 
-        return response()->json([
+        return new JsonResponse([
             'success' => true,
             'originalUrl' => $originalUrl,
         ]);

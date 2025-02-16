@@ -17,7 +17,7 @@ class UrlEncoderControllerTest extends TestCase
         $this->app->instance(EncoderService::class, $this->encoderServiceMock);
     }
 
-    public function testShortenReturnsSuccessResponse()
+    public function testEncodeReturnsSuccessResponse()
     {
         $shortenedData = [
             'shortenedValue' => 'abc123',
@@ -30,7 +30,7 @@ class UrlEncoderControllerTest extends TestCase
             ->with('https://example.com')
             ->andReturn($shortenedData);
 
-        $response = $this->json('POST', '/api/shorten', ['url' => 'https://example.com']);
+        $response = $this->json('POST', '/api/encode', ['url' => 'https://example.com']);
 
         $response->assertStatus(201)
             ->assertJson([
@@ -40,9 +40,9 @@ class UrlEncoderControllerTest extends TestCase
             ]);
     }
 
-    public function testShortenHandlesValidationError()
+    public function testEncodeHandlesValidationError()
     {
-        $response = $this->json('POST', '/api/shorten');
+        $response = $this->json('POST', '/api/encode');
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['url']);
@@ -57,7 +57,7 @@ class UrlEncoderControllerTest extends TestCase
             ->with('abc123')
             ->andReturn($originalUrl);
 
-        $response = $this->json('GET', '/api/decode', ['key' => 'abc123']);
+        $response = $this->json('POST', '/api/decode', ['key' => 'abc123']);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -74,7 +74,7 @@ class UrlEncoderControllerTest extends TestCase
             ->with('abc123')
             ->andReturnNull();
 
-        $response = $this->json('GET', '/api/decode', ['key' => 'abc123']);
+        $response = $this->json('POST', '/api/decode', ['key' => 'abc123']);
 
         $response->assertStatus(404)
             ->assertJson([
